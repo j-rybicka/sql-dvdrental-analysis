@@ -1,11 +1,11 @@
-# Analiza danych DVD Rental
+# DVD Rental Data Analysis
 
-## Zadanie 1 - Popularne gatunki
+## Task 1 - Popular Genres
 
-### Treść
-Jakie są najczęściej i najrzadziej wypożyczane gatunki i jaka jest ich łączna sprzedaż?
+### Problem
+What are the most and least rented genres, and what are their total sales?
 
-### Rozwiązanie
+### Solution
 
 ```sql
 SELECT category.name as category, COUNT(*) as total_rentals, SUM(amount) as payment_amount
@@ -25,7 +25,7 @@ ORDER BY COUNT(*)
 ;
 ```
 
-### Wyniki
+### Results
 
 |"category"|"total_rentals"|"payment_amount"|
 |-|-|-|
@@ -46,21 +46,21 @@ ORDER BY COUNT(*)
 |Animation|1065|4245.31|
 |Sports|1081|4892.19|
 
-### Wnioski
-Najczęściej wypożyczanym gatunkiem filmowym jest "Sport", po który klienci sięgnęli 1081 razy, wydając łącznie $4892.19. Na drugim miejscu plasuje się gatunek "Animation", dla którego liczba wypożyczeń to 1065, a suma przychodów to $4245.31. Możemy zauważyć, że gatunek "Comedy" mimo mniejszej liczby wypożyczeń w sumie zarobił $4002.48, co stanowi 80% wypożyczeń filmów animowanych i jednocześnie 94% ich przychodu. Filmy z kategorii "Music" zajmują ostatnie miejsce w rankingu popularności z łączną liczbą wypożyczeń 750, jednocześnie są najmniej kasowymi filmami, bo przyniosły $3071.52 zysku.
+### Insights
+The most frequently rented film genre is “Sports,” which customers rented 1,081 times, spending a total of $4,892.19. In second place is the “Animation” genre, with 1,065 rentals and total revenue of $4,245.31. We can see that despite fewer rentals, the “Comedy” genre earned a total of $4,002.48, which accounts for 80% of animated film rentals and 94% of their revenue. Films in the “Music” category rank last in popularity with a total of 750 rentals, and are also the least profitable, generating $3,071.52 in revenue.
 
-Na podstawie powyższego możnaby podjąć decyzję o podwyższeniu ceny filmów animowanych. Sugerowałabym również zrobienie kampanii marketingowej, na którą możemy zaprosić osoby z branży muzycznej, która zachęciłaby fanów do wypożyczania filmów z kategorii "Music".
+Based on the above, a decision could be made to increase the price of animated films. I would also suggest launching a marketing campaign to which we could invite people from the music industry, which would encourage fans to rent films from the “Music” category.
 
 
 -----------------
 
 
-## Zadanie 2 - Preferowane gatunki
+## Task 2 - Preferred genres
 
-### Treść
-Czy możemy dowiedzieć się, ilu różnych użytkowników wypożyczyło każdy gatunek?
+### Problem
+Can we find out how many different users rented each genre?
 
-### Rozwiązanie
+### Solution
 
 ```sql
 SELECT category.name as category, COUNT(DISTINCT rental.customer_id) as unique_customers
@@ -80,7 +80,7 @@ ORDER BY 2 DESC
 ;
 ```
 
-### Wyniki
+### Results
 |"category"|"unique_customers"|
 |-|-|
 |Sports|507|
@@ -100,20 +100,20 @@ ORDER BY 2 DESC
 |Music|431|
 |Travel|428|
 
-### Wnioski
-Największą liczbę klientów możemy zaliczyć do miłośników gatunku "Sports". Niewiele za nim znajdują się fani gatunku "Action". Na samym końcu widzimy, że kategoria "Travel" ma najmniejsze grono odbiorców, mimo, że nie była na ostatnim miejscu rankingu popularności wypożyczeń.
+### Insights
+The largest number of customers can be classified as fans of the “Sports” genre. Not far behind are fans of the ‘Action’ genre. At the very bottom, we see that the “Travel” category has the smallest audience, even though it was not in last place in the rental popularity ranking.
 
 -----------------
 
 
 
 
-## Zadanie 3 - Rentowność kategorii filmowych
+## Task 3 - Profitability of film categories
 
-### Treść
-Jaka jest średnia stawka wypożyczenia dla każdego gatunku? (od najwyższej do najniższej)
+### Problem
+What is the average rental rate for each species? (from highest to lowest)
 
-### Rozwiązanie
+### Solution
 
 ```sql
 SELECT category.name as category, ROUND(AVG(rental_rate), 2) as avg_rental
@@ -127,7 +127,7 @@ ORDER BY AVG(rental_rate) DESC
 ;
 ```
 
-### Wyniki
+### Results
 |"category"|"avg_rental"|
 |-|-|
 |Games|3.25|
@@ -147,21 +147,21 @@ ORDER BY AVG(rental_rate) DESC
 |Documentary|2.67|
 |Action|2.65|
 
-### Wnioski
-Możemy zauważyć, że największą średnią stawkę wypożyczeń ma kategoria "Games" i wynosi $3.25. Kilka kolejnych miejsc w rankingu jest stosunkowo zbliżonych, jeśli chodzi o średną cenę za wypożyczenie. 9 gatunków z 16 ma średnią cenę za wypożyczenie powyżej $3. Najtańsze są filmy z gatunku "Action", a różnica w cenie między najdroższym a najtańszym gatunkiem wynosi $0.60. 
+### Insights
+We can see that the category “Games” has the highest average rental rate, at $3.25. The next few places in the ranking are relatively close in terms of average rental price. Nine out of 16 genres have an average rental price above $3. The cheapest are movies in the “Action” genre, and the price difference between the most expensive and cheapest genres is $0.60. 
 
 -----------------
 
 
-## Zadanie 4 - Terminowość wypożyczeń
+## Task 4 - On-time returns
 
-### Treść
-Ile wypożyczonych filmów zostało zwróconych z opóźnieniem, przed terminem i na czas?
+### Problem
+How many rented movies were returned late, early, and on time?
 
-### Rozwiązanie
+### Solution
 
 ```sql
--- opcja 1, trzy kolumny z kategorią
+-- option 1, three columns with category
 SELECT 
 rental_duration > EXTRACT(DAY FROM return_date-rental_date) as is_early,
 rental_duration = EXTRACT(DAY FROM return_date-rental_date) as is_on_time,
@@ -175,7 +175,7 @@ ON inventory.film_id=film.film_id
 GROUP BY 1,2,3
 ;
 
--- opcja 2, CASE - warunki i przypisanie etykiety tekstowej
+-- option 2, CASE - conditions and text label assignment
 SELECT 
 CASE 
 	WHEN rental_duration > EXTRACT(DAY FROM return_date-rental_date) THEN 'early'
@@ -195,7 +195,7 @@ ORDER BY 2 DESC
 ;
 ```
 
-### Wyniki
+### Results
 |"category"|"total_returned_movies"|
 |-|-|
 |early|7738|
@@ -204,31 +204,31 @@ ORDER BY 2 DESC
 |not_returned_yet|183|
 
 
-### Wnioski
-W tym rankingu widzimy, że 1720 klientów zwróciło wypożyczony film na czas, natomiast aż 7738 klientów oddało filmy przed ich maksymalnym, dozwolonym czasem zwrócenia. Liczba klientów, która spóźniła się ze zwrotem wypożyczonego filmu wynosi 6043. 183 filmy nie zostały jeszcze zwrócone.
+### Insights
+In this ranking, we can see that 1,720 customers returned their rented movies on time, while as many as 7,738 customers returned their movies before the maximum allowed return time. The number of customers who were late in returning their rented movies is 6,043. 183 movies have not yet been returned.
 
-Na tej podstawie moglibyśmy zastosować większe kary pieniężne dla klientów, którzy nie oddają wypożyczonych filmów na czas.
-Wypożyczalnie mogłby również przeprowadzić ankietę wśród klientów, którzy zwracają filmy przed czasem, aby dokładniej zrozumieć przyczynę szybszego zwrotu - w zależności od wyników część filmów mogłaby mieć skrócony czas maksymalnego wypożyczenia, część filmów mogłaby zostać wycofana ze sprzedaży ze względu na niską jakość. Aby uporać się z klientami, którzy oddają filmy po wyznaczonym czasie można rozważyć system nagród za oddanie filmu na czas.
+On this basis, we could impose higher fines on customers who do not return rented movies on time.
+Rental stores could also conduct a survey among customers who return movies ahead of time to better understand the reason for the early return. Depending on the results, some movies could have their maximum rental period shortened, while others could be withdrawn from sale due to poor quality. To deal with customers who return movies after the deadline, a reward system for returning movies on time could be considered.
 
 -----------------
 
 
 
-## Zadanie 5 - Zasięg sprzedaży
+## Task 5 - Sales coverage
 
-### Treść
-W jakich krajach działa nasza firma i jaka jest baza klientów w każdym z tych krajów? 
+### Problem
+In which countries does our company operate, and what is the customer base in each of these countries?
 
-Jaka jest łączna sprzedaż w każdym z krajów? (od największej do najmniejszej)
+What are the total sales in each country? (from largest to smallest)
 
-### Uwagi autora
-Osoby definiujące pytanie nie wyraziły się jasno co rozumieją poprzez "działanie" w kraju, więc postanowiłam rozważyć 3 warianty:
-- **A** - Sprzedaż ze względu na lokalizację wypożyczalni
-- **B** - Sprzedaż ze względu na lokalizację klienta
-- **C** - Sprzedaż ze względu na lokalizację wypożyczalni i klienta (klienci z którego kraju, wypożyczają z lokali z którego kraju)
+### Author's notes
+The people who defined the question did not clearly state what they meant by “activity” in the country, so I decided to consider three options:
+- **A** - Sales based on the location of the rental place
+- **B** - Sales based on the location of the customer
+- **C** - Sales based on the location of the rental place and the customer (customers from which country rent from locations in which country)
 
 
-### Rozwiązanie A (lokalizacja wypożyczalni)
+### Solution A (location of the rental place)
 
 ```sql
 SELECT country, SUM(amount) as total_sales, COUNT(*) as total_payments, COUNT(DISTINCT rental.customer_id) as unique_customers, COUNT(DISTINCT staff.staff_id) as employees
@@ -250,7 +250,7 @@ ORDER BY SUM(amount) desc
 ;
 ```
 
-### Wyniki A (lokalizacja wypożyczalni)
+### Results A (location of the rental place)
 |"country"|"total_sales"|"total_payments"|"unique_customers"|"employees"|
 |-|-|-|-|-|
 |Australia|30813.33|7265|599|1|
@@ -259,7 +259,7 @@ ORDER BY SUM(amount) desc
 
 
 
-### Rozwiązanie B (lokalizacja klienta)
+### Solution B (location of the customer)
 
 ```sql
 SELECT country, SUM(amount) as total_sales, COUNT(*) as total_payments, COUNT(DISTINCT customer.customer_id) as unique_customers
@@ -279,7 +279,7 @@ ORDER BY SUM(amount) desc
 ;
 ```
 
-### Wyniki B (lokalizacja klienta)
+### Results B (location of the customer)
 |"country"|"total_sales"|"total_payments"|"unique_customers"|
 |-|-|-|-|
 |India|6032.79|1421|60|
@@ -287,7 +287,7 @@ ORDER BY SUM(amount) desc
 |United States|3694.27|873|36|
 |Japan|3121.52|748|31|
 |Mexico|2984.82|718|30|
-|*100 krajów pominięto*|....|....|...|
+|*100 countries omitted*|....|....|...|
 |Afghanistan|67.82|18|1|
 |Tonga|64.84|16|1|
 |Saint Vincent and the Grenadines|64.82|18|1|
@@ -295,7 +295,7 @@ ORDER BY SUM(amount) desc
 |American Samoa|47.85|15|1|
 
 
-### Rozwiązanie C (lokalizacja klienta i wypożyczalni)
+### Solution C (location of the rental place and the customer)
 
 ```sql
 CREATE TEMPORARY TABLE customer_countries_store_countries AS
@@ -330,7 +330,7 @@ GROUP BY country, customer_country
 ORDER BY SUM(amount) desc;
 ```
 
-### Wyniki C (lokalizacja klienta i wypożyczalni)
+### Results C (location of the rental place and the customer)
 
 |"country"|"customer_country"|"total_sales"|"total_payments"|"unique_customers"|
 |-|-|-|-|-|
@@ -338,15 +338,15 @@ ORDER BY SUM(amount) desc;
 |Canada|India|2892.22|678|60|
 |Australia|China|2630.59|640|53|
 |Canada|China|2616.45|656|53|
-|*100 krajów pominięto*|...|...|...|...|...|
+|*100 countries omitted*|...|...|...|...|...|
 |Australia|American Samoa|22.93|7|1|
 |Canada|Nepal|20.96|4|1|
 |Australia|Tunisia|20.94|6|1|
 |Canada|Saint Vincent and the Grenadines|13.94|6|1|
 
 
-### Dodatkowe pytania do wariantu C (lokalizacja klienta i wypożyczalni)
-1) Czy istnieje jakiś kraj, z którego liczba unikalnych klientów się różni między lokalizacjami wypożyczalni? 
+### Additional questions to option C (location of the rental place and the customer)
+1) Is there any country where the number of unique customers varies between rental locations? 
 ```sql
 SELECT c1.customer_country as customer_coutry, c1.country as kraj1, c2.country as kraj2, c1.unique_customers as uc_kraj1, c2.unique_customers as uc_kraj2
 FROM customer_countries_store_countries as c1
@@ -355,7 +355,7 @@ ON c1.customer_country = c2.customer_country AND c1.country != c2.country AND c1
 WHERE c1.unique_customers != c2.unique_customers
 ;
 ```
-2) Czy istnieje kraj, z którego klienci wypożyczaliby tylko w jednej lokalizacji?
+2) Is there a country where customers would only rent from one location?
 ```sql
 SELECT customer_country, count(*), ARRAY_AGG(country)
 FROM customer_countries_store_countries
@@ -366,24 +366,26 @@ HAVING count(*) = 1
 ```
 
 
-### Wnioski
-1. Analizując sprzedaż w kontekście lokalizacji wypożyczalni możemy łatwo zawuażyć, że dochody w Australii ($30813.33) są większe niż w Kanadzie ($30498.71) - różnica przychodów między tymi krajami to niespełna $314.62, czyli 1%. Łącznie w obu krajach wypożyczono filmy o wartości $61312.04. <br>Liczba transakcji jest podobna w przypadku obu krajów, natomiast Kanada miała więcej przeprowadzonych transakcji, mimo ogólnego mniejszego przychodu. Wypożyczalnie w obu krajach mają po 599 klientów i po 1 pracowniku.
+### Insights
+1. Analyzing sales in the context of rental location, we can easily see that revenues in Australia ($30,813.33) are higher than in Canada ($30,498.71) – the difference in revenue between these countries is less than $314.62, or 1%. In total, movies worth $61,312.04 were rented in both countries. The number of transactions is similar for both countries, but Canada had more transactions despite lower overall revenue. Rental stores in both countries have 599 customers and 1 employee each.
 
 
-2. Największą liczbę wypożyczeń odnotowano wśród klientów z Indii, gdzie mamy 60 indywidualnych klientów, którzy dokonali 1421 płatności na łączną kwotę $6032.79. Chińczycy wypożyczają prawie tyle co Hindusi, co umieszcza ich na drugim miejscu rankingu. Klienci ze Stanów Zjednoczonych znaleźli się na trzecim miejscu, ze znacznie mniejszą liczbą wypożyczeń i klientów, co przełożyło się na łączną kwotę sprzedaży $3694.27. Porównując ze sobą kraje z pierwszych 5 miejsc, można wysuć wniosek, że przychody są skorelowane z liczbą unikalnych klientów - 60 klientów oznacza przychód w okolicy $60k, a 36 klientów to w przybliżeniu $36k. <br>
-Klienci z American Samoa i Litwy znaleźli się na końcu rankingu, mając po jednym kliencie i odpowiednio $47 i $64 w sprzedaży.
+2. The highest number of rentals was recorded among customers from India, where we have 60 individual customers who made 1,421 payments for a total of $6,032.79. The Chinese rent almost as much as the Indians, which puts them in second place in the ranking. Customers from the United States came in third, with significantly fewer rentals and customers, which translated into total sales of $3,694.27. Comparing the top 5 countries, we can conclude that revenue is correlated with the number of unique customers - 60 customers means revenue of around $60k, and 36 customers means approximately $36k.
+Customers from American Samoa and Lithuania were at the bottom of the ranking, with one customer each and $47 and $64 in sales, respectively.
 
-3. Wyniki sprzedaży w przypadku analizy w kontekście lokalizacji wypożyczalni i klienta są stosunkowo zbliżone do wyników z wariantu B (badanie pod kątem lokalizacji klienta) - ponownie na samym szczycie rankingu są klienci z Indii i Chin, a na końcu klienci z American Samoa i Saint Vincent and the Grenadines. <br>Widoczne jest to, że w każdym kraju mamy dokładnie taką samą liczbę unikalnych klientów, a klienci z żadnego kraju nie wypożyczali tylko z jednej lokalizacji. Wynika to z odpowiedzi na dodatkowe pytania do wariantu C. <br>Nie widać dużej rozbieżności w sprzedaży i liczbie transakcji obu lokalizacji wypożyczalni, patrząc na każdy kraj kliencki. W rzeczywistości świadczy to o podobnym rozkładzie danych w przygotowanym zbiorze - transakcje zostały rozdzielone tak, żeby każdy klient dokonywał wypożyczeń w każdym sklepie prawie po równo.
+
+3. Sales results when analyzed in terms of rental location and customer location are relatively similar to those in variant B (customer location analysis) – once again, customers from India and China are at the top of the ranking, while customers from American Samoa and Saint Vincent and the Grenadines are at the bottom. <br>It is clear that we have exactly the same number of unique customers in each country, and customers from no country rented from only one location. This is evident from the answers to the additional questions for variant C. <br>There is no significant difference in sales and the number of transactions between the two rental locations when looking at each customer country. In fact, this indicates a similar distribution of data in the prepared set - transactions were distributed so that each customer rented almost equally from each store.
+
 
 -----------------
 
 
-## Zadanie 6 - Najlepsi klienci
+## Task 6 - Best customers
 
-### Treść
-Kim jest 5 najlepszych klientów pod względem całkowitej sprzedaży i czy możemy uzyskać ich dane na wypadek, gdyby firma chciała ich nagrodzić?
+### Problem
+Who are the top 5 customers in terms of total sales, and can we get their details in case the company wants to reward them?
 
-### Rozwiązanie
+### Solution
 
 ```sql
 CREATE TEMPORARY TABLE top_5_customers as 
@@ -409,7 +411,7 @@ ON address.city_id=city.city_id
 ;
 ```
 
-### Wyniki
+### Results
 |"first_name"|"last_name"|"total_sales"|"email"|"postal_address"|
 |-|-|-|-|-|
 |Eleanor|Hunt|211.55|eleanor.hunt@sakilacustomer.org|92150 Saint-Denis, 1952 Pune Lane|
@@ -418,42 +420,43 @@ ON address.city_id=city.city_id
 |Rhonda|Kennedy|191.62|rhonda.kennedy@sakilacustomer.org|11044 Apeldoorn, 1749 Daxian Place|
 |Clara|Shaw|189.60|clara.shaw@sakilacustomer.org|30861 Molodetno, 1027 Songkhla Manor|
 
-### Wnioski
-Dane adresowe pięciu klientów, którzy wydali na wypożyczenia filmów najwięcej zostały przedstawione. <br>Klientką, która wydała najwięcej ($211.55) jest Eleanor Hunt z Saint-Denis. Na drugim miejscu znalazł się Karl Seal z Cape Coral, który wydał zaledwie 3 dolary mniej od Eleanor ($208.58). Dzięki wydanym $189.6, na piątym miejscu znalazła się Clara Shaw z Molodetno.
+### Insights
+The address details of the five customers who spent the most on movie rentals were presented. <br>The customer who spent the most ($211.55) is Eleanor Hunt from Saint-Denis. In second place is Karl Seal from Cape Coral, who spent just $3 less than Eleanor ($208.58). With $189.6 spent, Clara Shaw from Molodetno came in fifth place.
 
 -----------------
 
 
-## Zadanie 7 - Segmenty klienckie
+## Task 7 - Customer segments
 
-### Treść
-Firma DVD Rental chce lepiej zrozumieć swoich klientów, aby:
- * zidentyfikować najbardziej wartościowych klientów,
- * znaleźć klientów aktywnych, ale generujących niskie przychody,
- * przygotować podstawę pod przyszłe kampanie marketingowe.
+### Problem
+DVD Rental wants to better understand its customers in order to:
+ * identify its most valuable customers,
+ * find active customers who generate low revenue,
+ * lay the groundwork for future marketing campaigns.
 
-Twoim zadaniem jest przygotowanie analizy segmentacji klientów na podstawie danych historycznych.
+Your task is to prepare a customer segmentation analysis based on historical data.
 
-Dla każdego klienta:
- 1. obliczyć jego aktywność (liczba wypożyczeń),
- 2. obliczyć jego wartość finansową (łączna kwota płatności),
- 3. przypisać go do prostego segmentu biznesowego
+For each customer:
+1. calculate their activity (number of rentals),
+2. calculate their financial value (total amount paid),
+3. assign them to a simple business segment.
 
-Zaprezentuj ilu mamy klientów w każdym segmencie.
-
-
-### Uwagi
-Definicja segmentów:
-* **VIP** - więcej niż 30 wypożyczeń i suma płatności > 150
-* **Regular** - 10–30 wypożyczeń
-* **Occasional** - mniej niż 10 wypożyczeń
-* **High activity / low value** - więcej niż 20 wypożyczeń i suma płatności < 100
+Show how many customers we have in each segment.
 
 
-### Rozwiązanie
+### Notes
+Definition of segments:
+* **VIP** - more than 30 rentals and total payments > $150
+* **Regular** - 10-30 rentals
+* **Occasional** - less than 10 rentals
+* **High activity / low value** - more than 20 rentals and total payments < $100
+
+
+
+### Solution
 
 ```sql
--- przeprowadzenie agregacji dla klienta
+-- performing aggregation for the customer
 CREATE TEMPORARY TABLE customer_stats as
 SELECT customer.customer_id, first_name, last_name, COUNT(rental.rental_id) as rentals, SUM(amount) as total_payment
 FROM customer
@@ -464,7 +467,7 @@ ON rental.rental_id=payment.rental_id
 GROUP BY customer.customer_id, first_name, last_name
 ;
 
--- segmentacja klientów
+-- customer segmentation
 CREATE TEMPORARY TABLE customers_segments as
 SELECT customer_id, first_name, last_name, rentals, total_payment, CASE
 WHEN total_payment > 150 AND rentals > 30 THEN 'VIP'
@@ -475,20 +478,20 @@ END as segments
 FROM customer_stats
 ;
 
--- grupujemy wyniki, żeby obejrzeć segmenty
+-- we group the results to view segments
 SELECT segments, COUNT(*)
 FROM customers_segments
 GROUP BY segments
 ORDER BY COUNT(*) desc;
 
--- obejrzyjmy klientów, którzy nie przypisali się do żadnej grupy
+-- let's look at customers who haven't assigned themselves to any group
 SELECT *
 FROM customers_segments
 WHERE segments IS NULL
 LIMIT 5;
 ```
 
-### Wyniki
+### Results
 |"segments"|"count"|
 |-|-|
 |Regular|531|
@@ -498,7 +501,7 @@ LIMIT 5;
 |High activity/low value|1|
 
 <br><br>
-**Klienci nieprzypisani do żadnej kategorii:**
+**Customers not assigned to any segment:**
 
 |"customer_id"|"first_name"|"last_name"|"rentals"|"total_payment"|"segments"|
 |-|-|-|-|-|-|
@@ -510,16 +513,16 @@ LIMIT 5;
 
 
 
-### Wczesne wnioski
-1. 47 klientów nie przynależy do segmentu, ale widocznie są to aktywni klienci, którzy jeszcze nie osiągneli statusu VIP, ale już nie są Regular. 
-<br/>Możliwe wyjścia:
-   * zmiana widełek dla segmentu 'High activity/low value', i podniesienie sumy płatności do $150.
-   * dodanie kolejnego segmentu, ale nie wydaje się to mieć sensu, bo do grupy 'High activity/low value' przynależy niewielu klientów (1)
-2. mała liczba klientów w segmencie 'High activity/low value' może wynikać z kolejności w CASE, przez co zaliczają się do Regular na podstawie liczby wypożyczeń, bo warunki tych segmentów mają część wspólną.
-    * możliwe wyjście - zmiana priorytetu reguł przypisania do segmentów tak, żeby 'High activity/low value' był wyżej niż Regular
+### Early conclusions
+1. 47 customers do not belong to the segment, but they are apparently active customers who have not yet achieved VIP status but are no longer Regular. 
+<br/>Possible solutions:
+   * change the range for the ‘High activity/low value’ segment and increase the payment amount to $150.
+   * add another segment, but this does not seem to make sense because there are few customers (1) in the ‘High activity/low value’ group
+2. the small number of customers in the ‘High activity/low value’ segment may be due to the order in CASE, which means that they are classified as Regular based on the number of rentals, because the conditions of these segments have a common part.
+    * Possible solution - change the priority of the assignment rules to segments so that ‘High activity/low value’ is higher than Regular.
 
 
-### Poprawione rozwiązanie
+### Improved solution
 ```sql
 DROP TABLE IF EXISTS customers_segments;
 CREATE TEMPORARY TABLE customers_segments as
@@ -532,14 +535,14 @@ END as segments
 FROM customer_stats
 ;
 
--- ponowne zliczenie segmentów
+-- recounting segments
 SELECT segments, COUNT(*)
 FROM customers_segments
 GROUP BY segments
 ORDER BY COUNT(*) desc;
 ```
 
-### Poprawione wyniki
+### Revised results
 |"segments"|"count"|
 |-|-|
 |High activity/low value|440|
@@ -547,33 +550,34 @@ ORDER BY COUNT(*) desc;
 |VIP|19|
 |Occasional|1|
 
-### Wnioski
-Po wprowadzeniu poprawek w regule przypisania klientów do segmentów, tj. podniesieniu priorytetu dla segmentu 'High activity/low value' oraz podwyższeniu limitu dla sumy płatności w tymże segmencie, widać że stał się on najliczniejszym segmentem.
-<br> Wśród wypożyczających znajduje się 19 VIP-ów, 440 klientów o statusie wysokiej aktywności, lecz bez wysokich przychodów, 139 stałych klientów oraz 1 klienta okazjonalnego.
-<br> Rozkład klientów o wysokiej randze ('High activity/low value' i 'VIP') wydaje się zbyt wysoki, podczas gdy klientów o niskim poziomie aktywności ('Occasional') jest niewielu. Może to świadczyć o konieczności modyfikacji reguł przypisania do segmentów, tak żeby najbardziej liczną grupą klientów byli Occasional lub Regular, a dwie grupy świadczące o wysokiej wartości klienta nie były aż tak łatwo dostępne.
+### Insights
+After introducing changes to the rule for assigning customers to segments, i.e., raising the priority for the “High activity/low value” segment and increasing the limit for the total payments in that segment, it can be seen that it has become the most numerous segment.
+<br> Among the renters, there are 19 VIPs, 440 customers with high activity but without high revenues, 139 regular customers, and 1 occasional customer.
+<br> The distribution of high-ranking customers (‘High activity/low value’ and ‘VIP’) seems too high, while there are few low-activity customers (‘Occasional’). This may indicate a need to modify the rules for assigning customers to segments so that the most numerous group of customers are Occasional or Regular, and the two groups indicating high customer value are not so easily accessible.
+
 
 -----------------
 
 
 
-## Zadanie 8 – Efektywność filmów
+## Task 8 – Movie Effectiveness
 
-### Treść
-**Potrzeba biznesowa**:
-<br/>Zespół chce zidentyfikować filmy, które są często wypożyczane, ale generują relatywnie niskie przychody,
-aby rozważyć zmianę cen lub promocje.
+### Problem
+**Business need**:
+<br/>The team wants to identify movies that are rented frequently but generate relatively low revenue
+in order to consider price changes or promotions.
 
-**Oczekiwania:** <br>
-- tytuł filmu
-- liczba wypożyczeń
-- łączna kwota płatności
-- średnia kwota płatności na wypożyczenie
+**Expectations:** <br>
+- movie title
+- number of rentals
+- total payment amount
+- average payment amount per rental
 
-**Dodatkowe informacje:**
+**Additional information:**
 <br>
-Analiza powinna obejmować tylko filmy, które były wypożyczane co najmniej 10 razy, aby uniknąć przypadków losowych.
+The analysis should only include movies that have been rented at least 10 times to avoid random cases.
 
-### Rozwiązanie
+### Solution
 
 ```sql
 SELECT title, COUNT(*) as total_rentals, SUM(amount) as total_payment_amount, ROUND(AVG(amount), 2) as avg_payment_amount
@@ -591,7 +595,7 @@ LIMIT 10
 ;
 ```
 
-### Wyniki
+### Results
 |"title"|"total_rentals"|"total_payment_amount"|"avg_payment_amount"|
 |-|-|-|-|
 |Smoking Barbarella|17|17.84|1.05|
@@ -606,7 +610,7 @@ LIMIT 10
 |Clockwork Paradise|10|11.90|1.19|
 
 
-### Alternatywne rozwiązanie
+### Alternative solution
 ```sql
 SELECT title, COUNT(*) as total_rentals, SUM(amount) as total_payment_amount, ROUND(AVG(amount), 2) as avg_payment_amount, ROUND(( SUM(amount)/COUNT(*) ) * (1 / ln(1+ COUNT(*))), 3) as score
 FROM payment
@@ -622,7 +626,7 @@ LIMIT 10
 ;
 ```
 
-### Alternatywne wyniki
+### Alternative results
 |"title"|"total_rentals"|"total_payment_amount"|"avg_payment_amount"|"score"|
 |-|-|-|-|-|
 |Smoking Barbarella|17|17.84|1.05|0.363|
@@ -637,43 +641,43 @@ LIMIT 10
 |Hollywood Anonymous|13|13.87|1.07|0.404|
 
 
-### Wnioski
-Najmniej rentownym filmem okazał się być "Smoking Barbarella", który był wypożyczany 17 razy i średnio kosztował klientów $1.05.
-Dla 10 filmów najmniej rentownych widać, że wypożyczane są za mniej więcej $1.
+### Insights
+The least profitable film was “Smoking Barbarella,” which was rented 17 times and cost customers an average of $1.05.
+The 10 least profitable films were rented for approximately $1.
 
 
-Podstawową miarą wykorzystaną do wyliczenia rentowności była średnia arytmetyczna, która musiała zostać wzmocniona warunkiem na minimalną liczbę wypożyczeń (wyznaczona empirycznie na wartość 10). Alternatywnie wykorzystałam wagę, która na średnią nakładała karę w przypadku małej liczby wypożyczeń - dzięki temu faworyzowane były filmy o niewielkim średnim przychodzie, lecz z większą liczbą wypożyczeń (nie trzeba filtrować danych).
+The basic measure used to calculate profitability was the arithmetic mean, which had to be reinforced by a minimum number of rentals (empirically set at 10). Alternatively, I used a weight that imposed a penalty on the average in the case of a small number of rentals - this favored films with low average revenue but a higher number of rentals (no need to filter the data).
 
 
-W obu przypadkach lista filmów jest bardzo podobna, lecz różnia się miejscem na liście. Każdy z wybranych filmów mógłby mieć podwyższoną cenę, gdyż jest na nie popyt, ale klienci nie płacą tyle ile by mogli.
+In both cases, the list of films is very similar, but differs in terms of their position on the list. Each of the selected films could have a higher price because there is demand for them, but customers do not pay as much as they could.
 
 
 -----------------
 
 
 
-## Zadanie 9 – Filmy problematyczne operacyjnie
+## Task 9 – Operationally problematic movies
 
-### Treść
-**Potrzeba biznesowa**:
-<br/>Zespół operacyjny chce zidentyfikować filmy, które często nie są zwracane na czas.
+### Problem
+**Business need**:
+<br/>The operations team wants to identify movies that are often not returned on time.
 
-**Oczekiwania:** <br>
-Zwróć listę filmów wraz z:
-- tytułem
-- liczbą wszystkich wypożyczeń
-- liczbą wypożyczeń trwających dłużej niż 7 dni
-- procentowym udziałem takich wypożyczeń
+**Expectations:** <br>
+Return a list of movies with:
+- title
+- total number of rentals
+- number of rentals lasting longer than 7 days
+- percentage of such rentals
 
-**Dodatkowe informacje:**
+**Additional information:**
 <br>
-Interesują tylko filmy, które były wypożyczane więcej niż 5 razy.
+Only movies that have been rented more than 5 times are of interest.
 
 
-### Rozwiązanie
+### Solution
 
 ```sql
--- proste agregacje
+-- simple aggregations
 CREATE TEMPORARY TABLE film_rentalsa as
 SELECT title, COUNT(*) as total_rental, SUM(
 CASE
@@ -688,14 +692,14 @@ ON inventory.inventory_id = rental.inventory_id
 GROUP BY title
 HAVING COUNT(*) > 5;
 
--- wyliczenie procentowego udziału
+-- calculation of the percentage share
 SELECT title, total_rental, longer_than_7_days, ROUND(100*(longer_than_7_days/(total_rental*1.0)), 2) as ratio
 FROM film_rentals
 ORDER BY (longer_than_7_days/(total_rental*1.0)) desc
 ;
 ```
 
-### Wyniki
+### Results
 |"title"|"total_rental"|"longer_than_7_days"|"ratio"|
 |-|-|-|-|
 |Reds Pocus|9|5|55.56|
@@ -710,11 +714,12 @@ ORDER BY (longer_than_7_days/(total_rental*1.0)) desc
 |Jawbreaker Brooklyn|10|0|0.00|
 |Lights Deer|8|0|0.00|
 
-### Wnioski
+### Insights
 
-Możemy zauważyć, że największy odsetek ponad tygodniowych wypożyczeń mają filmy "Reds Pocus" i "Gilbert Pelican" - te filmy są przetrzymywane w 55% przypadków wypożyczeń. Istnieją też filmy, które nigdy nie były zwrócone po tygodniu, takie jak "Lights Deer", czy "Won Dares".
+We can see that the highest percentage of rentals lasting longer than a week are for the films “Reds Pocus” and “Gilbert Pelican”—these films are kept in 55% of rentals. There are also films that have never been returned after a week, such as “Lights Deer” and “Won Dares”.
 
-Wypożyczalnie mogłyby przeprowadzić ankietę wśród spóźnialskich klientów, aby dokładniej zrozumieć dlaczego decydują się na przetrzymywanie tych konkretnych tytułów - w zależności od wyników dla części filmów mogłaby być wprowadzona większa liczba kopii.
+Rental stores could conduct a survey among late customers to better understand why they decide to keep these specific titles—depending on the results for some films, a larger number of copies could be introduced.
+
 
 -----------------
 
@@ -722,26 +727,27 @@ Wypożyczalnie mogłyby przeprowadzić ankietę wśród spóźnialskich klientó
 
 
 
-## Zadanie 10
+## Task 10 - Employee workload
 
-### Treść
-**Potrzeba biznesowa**:
-<br/>Kierownik chce sprawdzić, czy obciążenie pracowników jest równomierne.
+### Problem
+**Business need**:
+<br/>The manager wants to check whether the workload is evenly distributed among employees.
 
 
-**Oczekiwania:** <br>
-Dla każdego pracownika zwróć:
-- imię i nazwisko
-- łączną liczbę obsłużonych wypożyczeń
-- liczbę unikalnych klientów
-- średnią liczbę wypożyczeń przypadającą na jednego klienta
+**Expectations:** <br>
+For each employee, return:
+- first and last name
+- total number of rentals handled
+- number of unique customers
+- average number of rentals per customer
 
-**Dodatkowe informacje:**
+**Additional information:**
 <br>
-Wynik powinien umożliwić porównanie intensywności pracy między pracownikami.
+The result should allow for a comparison of the workload between employees.
 
 
-### Rozwiązanie
+
+### Solution
 
 ```sql
 SELECT staff.staff_id, COUNT(DISTINCT customer.customer_id) as unique_customers, COUNT(*) as total_rentals, ROUND(1.0*COUNT(*)/COUNT(DISTINCT customer.customer_id), 2) as rentals_per_customer
@@ -754,42 +760,42 @@ GROUP BY staff.staff_id
 ;
 ```
 
-### Wyniki
+### Results
 |"staff_id"|"unique_customers"|"total_rentals"|"rentals_per_customer"|
 |-|-|-|-|
 |1|599|8040|13.42|
 |2|599|8004|13.36|
 
-### Wnioski
-W tej analizie możemy zobaczyć, że pracownicy dwóch sklepów mają po tyle samo unikalnych klientów, natomiast sama liczba, jak i średnia wypożyczeń niewiele różnią się od siebie.
+### Insights
+In this analysis, we can see that the employees of the two stores have the same number of unique customers, while the total number and average number of rentals do not differ significantly.
 
-W przypadku prcownika numer 1 widzimy, że łączna liczba wypożyczeń (8040) jest o 0.5% większa niż w przypadku pracownika numer 2 (8004).
+In the case of employee number 1, we can see that the total number of rentals (8,040) is 0.5% higher than in the case of employee number 2 (8,004).
 
-Obciążenie wśród pracowników jest równomierne i według mnie zbyt wysokie - obie wypożyczalnie powinny zatrudnić dodatkowe osoby.
+The workload among employees is evenly distributed and, in my opinion, too high—both rental companies should hire additional staff.
+
 
 -----------------
 
 
 
-## Zadanie 11 – Klienci z szerokimi preferencjami
+## Task 11 – Customers with broad preferences
 
-### Treść
-**Potrzeba biznesowa:**<br>
-Zespół produktowy chce zidentyfikować klientów o zróżnicowanych gustach filmowych,
-którzy mogą być bardziej otwarci na rekomendacje.
+### Problem
+**Business need:**<br>
+The product team wants to identify customers with diverse movie tastes
+who may be more open to recommendations.
 
-**Oczekiwania:**<br>
-- identyfikator klienta
-- imię i nazwisko
-- liczba różnych kategorii filmów, które wypożyczył
-- łączna liczba wypożyczeń
+**Expectations:**<br>
+- customer ID
+- first and last name
+- number of different movie categories rented
+- total number of rentals
 
-**Dodatkowe informacje:**<br>
-Celem jest znalezienie klientów, którzy regularnie sięgają po różne typy filmów.
+**Additional information:**<br>
+The goal is to find customers who regularly rent different types of movies.
 
 
-
-### Rozwiązanie
+### Solution
 
 ```sql
 SELECT customer.customer_id, first_name, last_name, COUNT (DISTINCT name) as unique_genres, COUNT(*) as total_rentals,
@@ -810,7 +816,7 @@ ORDER BY COUNT (DISTINCT name) desc
 ;
 ```
 
-### Wyniki
+### Results
 |"percentage_of_watched_genres"|"users"|"percentage_users"|
 |-|-|-|
 |100|19|3.17|
@@ -818,34 +824,35 @@ ORDER BY COUNT (DISTINCT name) desc
 |<50;75)|100|16.69|
 |<75;100)|479|79.97|
 
-### Wnioski
-Aż 599 klientów regularnie sięga po różne typy filmów. W bazie wypożyczalni znajduje się 16 gatunków filmów.
+### Insights
+As many as 599 customers regularly watch different types of films. The rental database contains 16 film genres.
 
-Tylko 3% klientów obejrzało filmy ze wszystkich dostępnych gatunków filmowych. Dla porównania - 16% zapoznało się z 50–75% dostępnych kategorii, a zdecydowana większość, bo aż 80% wybierała filmy z niemal całego wachlarza dostępnych gatunków.
+Only 3% of customers have watched films from all available genres. For comparison, 16% have watched films from 50-75% of the available categories, and the vast majority, as many as 80%, have chosen films from almost the entire range of available genres.
+
 
 -----------------
 
 
 
 
-## Zadanie 12 – Czas przetrzymywania filmów
+## Task 12 – Movie retention time
 
-### Treść
-**Potrzeba biznesowa:**<br>
-Firma chce sprawdzić, które filmy są najczęściej przetrzymywane dłużej niż przewidywany czas wypożyczenia, co może wpływać na dostępność oferty dla innych klientów.
+### Problem
+**Business need:**<br>
+The company wants to check which movies are most often retained longer than the expected rental period, which may affect the availability of the offer for other customers.
 
-**Oczekiwania:**<br>
-Dla każdego filmu zwróć:
-- tytuł filmu
-- średni czas rzeczywistego wypożyczenia (w dniach)
-- przewidywany czas wypożyczenia wynikający z danych filmu
-- różnicę między czasem rzeczywistym a przewidywanym
+**Expectations:**<br>
+For each movie, return:
+- movie title
+- average actual rental period (in days)
+- expected rental period based on movie data
+- difference between actual and expected periods
 
-**Dodatkowe informacje:**<br>
-Czas rzeczywisty należy obliczyć na podstawie dat wypożyczenia i zwrotu.
-Interesują tylko wypożyczenia zakończone (zwrócone).
+**Additional information:**<br>
+The actual period should be calculated based on rental and return dates.
+Only completed (returned) rentals are of interest.
 
-### Rozwiązanie
+### Solution
 
 ```sql
 CREATE TEMPORARY TABLE actual_rental_durations as 
@@ -867,7 +874,7 @@ ORDER BY 4
 ;
 ```
 
-### Wyniki
+### Results
 |"title"|"average_rental_duration"|"rental_duration"|"diff"|
 |-|-|-|-|
 |Greedy Roots|2.57|7|-4.43|
@@ -882,10 +889,10 @@ ORDER BY 4
 |Run Pacific|6.00|3|3.00|
 |Mother Oleander|6.36|3|3.36|
 
-### Wnioski
-Zestawienie terminowości zwracanych wypożyczeń była już dokonywana we wcześniejszym zadaniu. Wynikało z niej, że większość wypożyczeń jest zwracana przed maksymalnym dozwolonym czasem.
+### Insights
+A summary of the timeliness of returned rentals was already made in an earlier task. It showed that most rentals are returned before the maximum allowed time.
 
-Średnio najdłużej przetrzymywanym filmem jest "Mother Oleander", który może być wypożyczony na 3 dni, a średnio zostaje zwrócony po ponad 6 dniach. Po drugiej stronie szali znajduje się film pod tytułem "Greedy Roots", który jest zwarany średnio 4 dni przed zakładanym czasem zwrotu.
+On average, the longest-held movie is “Mother Oleander,” which can be rented for 3 days but is returned after more than 6 days on average. On the other side of the scale is the movie “Greedy Roots,” which is returned on average 4 days before the expected return date.
 
 -----------------
 
@@ -893,24 +900,24 @@ Zestawienie terminowości zwracanych wypożyczeń była już dokonywana we wcze�
 
 
 
-## Zadanie 13 – Najczęściej wybierana pora wypożyczeń
+## Task 13 – Most popular rental times
 
-### Treść
-**Potrzeba biznesowa:**<br>
-Firma chce lepiej zrozumieć, w jakich porach dnia klienci
-najczęściej dokonują wypożyczeń, aby lepiej planować obsługę.
+### Problem
+**Business need:**<br>
+The company wants to better understand at what times of day customers
+most often make rentals in order to better plan its service.
 
-**Oczekiwania:**<br>
-Zwróć:
-- przedział czasowy dnia (np. noc, poranek, popołudnie, wieczór)
-- łączną liczbę wypożyczeń w danym przedziale
-- informację, który przedział jest najpopularniejszy
+**Expectations:**<br>
+Return:
+- time of day (e.g., night, morning, afternoon, evening)
+- total number of rentals in a given time slot
+- information about which time slot is the most popular
 
-**Dodatkowe informacje:**<br>
-Przedziały czasowe należy zdefiniować na podstawie godziny wypożyczenia.
-Klasyfikacja powinna być czytelna i jednoznaczna.
+**Additional information:**<br>
+Time slots should be defined based on the time of rental.
+The classification should be clear and unambiguous.
 
-### Rozwiązanie
+### Solution
 
 ```sql
 SELECT CASE
@@ -925,7 +932,7 @@ GROUP BY 1
 ORDER BY COUNT(*) desc
 ;
 
--- noc jest popularniejsza niż wieczór, sprawdźmy jak wypożyczenia rozkładają się w poszczególnych godzinach
+-- night is more popular than evening, let's check how rentals are distributed across different hours
 SELECT EXTRACT(HOUR FROM rental_date) as rental_hour, COUNT(*) as total_rentals
 FROM rental
 GROUP BY EXTRACT(HOUR FROM rental_date)
@@ -933,16 +940,16 @@ ORDER BY COUNT(*) desc
 ;
 ```
 
-### Wyniki
-**Wypożyczenia według pory dnia**
-|"time_of_day"|"total_rentals"|
+### Results
+**Rentals by time of day**
+|“time_of_day”|“total_rentals”|
 |-|-|
 |morning|5327|
 |afternoon|4803|
 |night|3909|
 |evening|2005|
 
-**Wypożyczenia według godzin dnia**
+**Rentals by hour of the day**
 |"rental_hour"|"total_rentals"|
 |-|-|
 |15|887|
@@ -970,10 +977,11 @@ ORDER BY COUNT(*) desc
 |2|630|
 |22|610|
 
-### Wnioski
-1. Klienci najchętniej wypożyczają film w godzinach porannych, a najmniejszy ruch w wypożyczalniach jest wieczorem.
-1. Noc jest popularniejszą porą dnia w kontekście wypożyczeń, niż wieczór.
-1. Zadziwiająco  godzina 23 jest na 2 miejscu rankingu popularności, północ jest na 6 miejscu, a godziny 1-3 zajmują kolejno 14, 16 i 17 miejsce w rankingu liczby wypożyczeń w ciągu dnia.
-1. Wypożyczenia są porozkładane równomiernie w ciągu doby i oscylują wokół 600 wypożyczeń, jendak możemy zauważyć, że godzina 15 znacznie wyróżnia się na tle pozostałych z przeważającą liczbą prawie 900 wypożyczeń.
+### Insights
+1. Customers are most likely to rent movies in the morning, and rental stores see the least traffic in the evening.
+1. Nighttime is a more popular time of day for rentals than evening.
+1. Surprisingly, 11 p.m. ranks second in popularity, midnight ranks sixth, and 1-3 a.m. ranks 14th, 16th, and 17th, respectively, in terms of the number of rentals during the day.
+1. Rentals are spread evenly throughout the day and fluctuate around 600 rentals, but we can see that 3 p.m. stands out significantly from the rest with a predominant number of almost 900 rentals.
+
 
 -----------------

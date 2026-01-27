@@ -1,7 +1,7 @@
--- Wypisz filmy, które: 
--- a) mają rating PG lub PG-13; 
--- b) czas trwania jest pomiędzy 95 a 130 minut 
--- c) nie zawierają w opisie (description) słowa “boring”
+-- List movies that:
+-- a) are rated PG or PG-13;
+-- b) have a running time between 95 and 130 minutes;
+-- c) do not contain the word “boring” in their description.
 
 SELECT rating, length, title, description
 FROM film

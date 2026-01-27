@@ -1,4 +1,4 @@
--- Znajdź kategorie filmów, w których żaden film nie trwa dłużej niż 180 minut.
+-- Find categories of movies in which no movie is longer than 180 minutes.
 
 SELECT category_id, COUNT(title) as movies, AVG(length) as avg_length, MAX(length) as max_length
 FROM film_category

@@ -1,4 +1,4 @@
--- Znajdź klientów, którzy nigdy nie mieli adresu e-mail kończącego się na .org
+-- Find customers who have never had an email address ending in .org
 SELECT customer_id
 FROM customer
 GROUP BY customer_id

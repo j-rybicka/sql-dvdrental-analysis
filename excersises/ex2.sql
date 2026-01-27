@@ -1,6 +1,6 @@
--- Znajdź wypożyczenia, które: 
--- a) zostały dokonane między 22:00 a 05:00 
--- b) nie zostały jeszcze zwrócone
+-- Find rentals that:
+-- a) were made between 10:00 PM and 5:00 AM
+-- b) have not yet been returned
 
 -- 0,1,2,3,4,5,6,7,8,9,.....,20,21,22,23
 -- XXXXXXXXXXX                     XXXXX

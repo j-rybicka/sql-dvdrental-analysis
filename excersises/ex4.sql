@@ -1,4 +1,4 @@
--- Znajdź filmy, które były wypożyczane wyłącznie za cenę ≤ 2.99
+-- Find movies that were rented exclusively for ≤ $2.99
 SELECT title, MAX(amount) as max_payment_amount, AVG(amount) as avg_payment_amount
 FROM payment
 INNER JOIN rental

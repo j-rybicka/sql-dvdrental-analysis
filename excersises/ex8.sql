@@ -1,7 +1,7 @@
--- Szukamy podejrzanych wypożyczeń...
--- Znajdź wypożyczenia (rental), dla których:
--- wypożyczenie trwało ≤ 3 dni
--- jeśli trwało > 3 dni, to musi mieć zapłaconą kwotę ≥ 4.99
+-- We are looking for suspicious rentals...
+-- Find rentals for which:
+-- the rental lasted ≤ 3 days
+-- if it lasted > 3 days, it must have an amount paid ≥ 4.99
 
 SELECT rental.rental_id, rental_date, return_date, amount, EXTRACT(DAY FROM return_date-rental_date) as rental_duration_days, 
 CASE

@@ -1,27 +1,27 @@
-# DVD Rental – Portfolio SQL (PostgreSQL)
+# DVD Rental – SQL Portfolio (PostgreSQL)
 
-## 📌 Opis projektu
-Repozytorium zawiera zestaw analiz SQL opartych na przykładowej bazie danych **PostgreSQL DVDRental**.  
-Celem projektu jest zaprezentowanie praktycznych umiejętności pracy z SQL w kontekście analizy danych, a nie jedynie prostych zapytań technicznych.
+## 📌 Project description
+The repository contains a set of SQL analyses based on the sample **PostgreSQL DVDRental** database.  
+The aim of the project is to present practical skills in working with SQL in the context of data analysis, rather than just simple technical queries.
 
-Projekt skupia się na:
-- logicznym filtrowaniu danych (`WHERE`)
-- agregacjach i analizie grup (`GROUP BY`, `HAVING`)
-- logice warunkowej (`CASE WHEN`)
-- podzapytaniach i konstrukcjach typu `EXISTS / NOT EXISTS`
-- rozbijaniu złożonych problemów na podproblemy oraz ich rozwiązywaniu przy użyciu dostępnych narzędzi
-- pracy na relacyjnej strukturze bazy danych
+The project focuses on:
+- logical data filtering (`WHERE`)
+- aggregations and group analysis (`GROUP BY`, `HAVING`)
+- conditional logic (`CASE WHEN`)
+- subqueries and `EXISTS / NOT EXISTS` constructions
+- breaking down complex problems into sub-problems and solving them using available tools
+- working on a relational database structure
 
 ------------------
 
-## 🛠️ Wykorzystane technologie
+## 🛠️ Technologies used
 - **PostgreSQL**
-- **Baza danych DVDRental**
+- **DVDRental database**
 - **SQL (pgAdmin)**
 
 ---
 
-## 📂 Struktura repozytorium
+## 📂 Repository structure
 
 ```
 sql-dvdrental-analysis/
@@ -39,45 +39,41 @@ sql-dvdrental-analysis/
 
 ```
 
-## 🗄️ Opis bazy danych DVDRental
+## 🗄️ Description of the DVDRental database
 
-Projekt opiera się na przykładowej bazie danych **DVDRental**, która symuluje działalność wypożyczalni filmów i zawiera dane dotyczące filmów, klientów, wypożyczeń, płatności, pracowników oraz struktury geograficznej adresów.  
-Baza ma charakter **relacyjny**, a jej diagram ER znajduje się w pliku [schema/dvdrental_schema.png](schema/dvdrental_schema.png)
+The project is based on the sample **DVDRental** database, which simulates the operations of a movie rental store and contains data on movies, customers, rentals, payments, employees, and the geographic structure of addresses.  
+The database is **relational**, and its ER diagram can be found in the file [schema/dvdrental_schema.png](schema/dvdrental_schema.png)
 
-### Tabele główne
+### Main tables
 
-- **film** – każdy wiersz reprezentuje jeden film dostępny w ofercie wypożyczalni wraz z jego metadanymi (tytuł, długość, cena wypożyczenia, czas wypożyczenia, rating).
-- **category** – każdy wiersz reprezentuje jedną kategorię filmową (np. Action, Comedy).
-- **film_category** – każdy wiersz łączy jeden film z jedną kategorią, umożliwiając przypisanie filmu do kategorii.
-- **actor** – każdy wiersz reprezentuje jednego aktora występującego w filmach.
-- **film_actor** – każdy wiersz reprezentuje udział jednego aktora w jednym filmie.
-
-
-### Struktura fizyczna i pracownicy
-
-- **inventory** – każdy wiersz reprezentuje jedną fizyczną kopię filmu przypisaną do konkretnego sklepu.
-- **store** – każdy wiersz reprezentuje jeden sklep wypożyczalni.
-- **staff** – każdy wiersz reprezentuje jednego pracownika obsługującego wypożyczenia i płatności.
-
-### Klienci i wypożyczenia
-
-- **customer** – każdy wiersz reprezentuje jednego klienta wypożyczalni wraz z danymi kontaktowymi i informacją o aktywności.
-- **rental** – każdy wiersz reprezentuje jedno wypożyczenie konkretnej kopii filmu przez klienta w określonym czasie.
-- **payment** – każdy wiersz reprezentuje jedną płatność dokonaną przez klienta za wypożyczenie filmu.
+- **movie** – each row represents one movie available in the rental store's offer, along with its metadata (title, length, rental price, rental period, rating).
+- **category** – each row represents one movie category (e.g., Action, Comedy).
+- **film_category** – each row links one movie to one category, allowing the movie to be assigned to a category.
+- **actor** – each row represents one actor appearing in movies.
+- **film_actor** – each row represents one actor's participation in one movie
 
 
-### Dane adresowe i geograficzne
+### Physical structure and employees
 
-- **address** – każdy wiersz reprezentuje jeden adres fizyczny powiązany z klientem, pracownikiem lub sklepem.
-- **city** – każdy wiersz reprezentuje jedno miasto, do którego przypisane są adresy.
-- **country** – każdy wiersz reprezentuje jedno państwo, w którym znajdują się miasta i adresy.
+- **inventory** – each row represents one physical copy of a movie assigned to a specific store.
+- **store** – each row represents one rental store.
+- **staff** – each row represents one employee handling rentals and payments.
 
-Baza danych DVDRental umożliwia analizę relacji między klientami, filmami i wypożyczeniami oraz stanowi realistyczne środowisko do ćwiczenia zapytań SQL w kontekście rzeczywistych problemów biznesowych.
+### Customers and rentals
+
+- **customer** – each row represents one rental store customer, including contact details and activity information.
+- **rental** – each row represents one rental of a specific copy of a movie by a customer at a specific time.
+- **payment** – each row represents one payment made by a customer for renting a movie.
+
+### Address and geographic data
+
+- **address** – each row represents one physical address associated with a customer, employee, or store.
+- **city** – each row represents one city to which addresses are assigned.
+- **country** – each row represents one country in which cities and addresses are located.
+
+The DVDRental database allows you to analyze the relationships between customers, movies, and rentals, and provides a realistic environment for practicing SQL queries in the context of real-world business problems.
 
 
+## 📊 Analyses
 
-## 📊 Przykładowe analizy
-W repozytorium znajdują się m.in. zapytania:
-- ...
-
-Każda analiza skupia się na konkretnym problemie i zawiera czytelne, udokumentowane zapytania SQL.
+Each analysis focuses on a specific problem and contains clear, documented SQL queries.

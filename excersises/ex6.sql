@@ -1,4 +1,4 @@
--- Znajdź aktorów, którzy nie grali w żadnym filmie z kategorii Horror
+-- Find actors who have not appeared in any films in the Horror category
 SELECT first_name, last_name
 FROM actor
 INNER JOIN film_actor

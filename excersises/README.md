@@ -1,13 +1,13 @@
-# Ćwiczenia
+# Exercises
 
-W tym katalogu znajdują się ćwiczenia w SQL na tej samej bazie, ale nie wnoszące zbyt wiele do samej analizy.
+This directory contains SQL exercises based on the same database, but they do not contribute much to the analysis itself.
 
-Ich celem jest trening zastosowania różnych mechanizmów i operatorów SQL, a niekoniecznie przynoszenia wartości biznesowej.
+Their purpose is to train the use of various SQL mechanisms and operators, not necessarily to bring business value.
 
-Zadania są ułożone w kolejności od najprostszego do najbardziej złożonego.
+The tasks are arranged in order from the simplest to the most complex.
 
-## Ćwiczenia skupiają się na:
-- logicznym filtrowaniu danych (`WHERE`)
-- agregacjach i analizie grup (`GROUP BY`, `HAVING`)
-- logice warunkowej (`CASE WHEN`)
-- złączaniach danych (`JOIN`)
+## The exercises focus on:
+- logical data filtering (`WHERE`)
+- aggregations and group analysis (`GROUP BY`, `HAVING`)
+- conditional logic (`CASE WHEN`)
+- data joins (`JOIN`)

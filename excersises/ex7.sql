@@ -1,10 +1,10 @@
---Dla każdego filmu wyświetl:
--- tytuł
--- długość filmu
--- kolumnę length_label, która:
-	-- przyjmuje wartość 'short', jeśli film trwa < 90 minut
-	-- 'medium', jeśli trwa od 90 do 120 minut
-	-- 'long', jeśli trwa > 120 minut
+--For each movie, display:
+-- title
+-- movie length
+-- length_label column, which:
+    -- takes the value ‘short’ if the movie is < 90 minutes long
+    -- ‘medium’ if it is between 90 and 120 minutes long
+    -- ‘long’ if it is > 120 minutes long
 
 SELECT title, length, CASE
     WHEN length < 90 THEN 'short'
